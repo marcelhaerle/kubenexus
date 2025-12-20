@@ -12,7 +12,12 @@ export default function NamespaceDetailPage() {
   const { name } = useParams();
   const router = useRouter();
 
-  const { data: ns, isLoading } = useQuery({
+  const {
+    data: ns,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['namespace', name],
     queryFn: async () => {
       const res = await fetch(`/api/namespaces/${name}`);
@@ -22,6 +27,11 @@ export default function NamespaceDetailPage() {
   });
 
   if (isLoading) return <div className="p-8">Loading Namespace Context...</div>;
+
+  if (isError)
+    return (
+      <div className="p-8 text-red-500">Error: {error?.message || 'Failed to load namespace'}</div>
+    );
 
   return (
     <div className="space-y-6">
