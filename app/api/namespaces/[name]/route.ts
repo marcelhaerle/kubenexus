@@ -17,10 +17,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       status: response.status,
     });
   } catch (error: unknown) {
-    return NextResponse.json(
-      { error: (error as Error).message || 'Failed to fetch namespace' },
-      { status: 500 },
-    );
+    if (isK8sError(error)) {
+      const statusCode = error.response.statusCode;
+      if (statusCode === 404) {
+        return NextResponse.json({ error: 'Namespace not found' }, { status: 404 });
+      }
+    }
+
+    const message = error instanceof Error ? error.message : 'Failed to fetch namespace';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
