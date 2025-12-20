@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCoreApi } from '@/lib/k8s-client';
 import { NamespaceSummary } from '@/types/k8s';
+import { isK8sError } from '@/lib/errors';
 
 export async function GET() {
   try {
@@ -18,10 +19,11 @@ export async function GET() {
       items: summaryItems,
     });
   } catch (error: unknown) {
-    return NextResponse.json(
-      { error: (error as Error).message || 'Failed to fetch namespaces' },
-      { status: 500 },
-    );
+    if (isK8sError(error)) {
+      return NextResponse.json({ error: error.body.reason }, { status: error.response.statusCode });
+    } else {
+      return NextResponse.json({ error: 'Failed to fetch namespaces' }, { status: 500 });
+    }
   }
 }
 
@@ -63,9 +65,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response, { status: 201 });
   } catch (error: unknown) {
-    const message =
-      (error as { body?: { message?: string } }).body?.message || 'Failed to create namespace';
-    const status = (error as { response?: { statusCode?: number } }).response?.statusCode || 500;
-    return NextResponse.json({ error: message }, { status });
+    if (isK8sError(error)) {
+      return NextResponse.json({ error: error.body.reason }, { status: error.response.statusCode });
+    } else {
+      return NextResponse.json({ error: 'Failed to create namespace' }, { status: 500 });
+    }
   }
 }
