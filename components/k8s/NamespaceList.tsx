@@ -116,6 +116,7 @@ export default function NamespaceList() {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => deleteMutation.mutate(ns.name)}
+                        disabled={deleteMutation.isPending}
                         className="bg-destructive hover:bg-destructive/90 text-white"
                       >
                         Delete Namespace
