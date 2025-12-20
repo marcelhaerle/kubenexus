@@ -19,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export default function NamespaceList() {
   const queryClient = useQueryClient();
@@ -37,12 +38,15 @@ export default function NamespaceList() {
     mutationFn: async (name: string) => {
       const safeName = sanitizeNamespaceName(name);
       const res = await fetch(`/api/namespaces/${safeName}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Failed to delete');
+      if (!res.ok) throw new Error((await res.json()).error);
       return res.json();
     },
     onSuccess: () => {
       // Refresh the list immediately
       queryClient.invalidateQueries({ queryKey: ['namespaces'] });
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to delete namespace');
     },
   });
 
