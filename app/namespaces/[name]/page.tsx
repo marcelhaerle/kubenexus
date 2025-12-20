@@ -44,6 +44,8 @@ export default function NamespaceDetailPage() {
       <div className="p-8 text-red-500">Error: {error?.message || 'Failed to load namespace'}</div>
     );
 
+  if (!ns) return <div className="p-8 text-muted-foreground">No namespace data available</div>;
+
   return (
     <div className="space-y-6">
       {/* Breadcrumbs / Back Navigation */}
