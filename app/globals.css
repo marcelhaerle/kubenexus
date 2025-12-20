@@ -27,6 +27,10 @@
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
+  --text-success: var(--color-success-foreground);
+    --text-warning: var(--color-warning-foreground);
+    --text-destructive: var(--color-destructive-foreground);
+    --text-foreground: var(--foreground);
 }
 
 :root {
@@ -45,11 +49,11 @@
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.985 0 0);
   --success: oklch(0.577 0.245 134.325);
-    --success-foreground: oklch(0.577 0.245 134.325);
+    --success-foreground: oklch(0.985 0 0);
     --warning: oklch(0.718 0.205 99.325);
-    --warning-foreground: oklch(0.718 0.205 99.325);
+    --warning-foreground: oklch(0.205 0 0);
   --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
