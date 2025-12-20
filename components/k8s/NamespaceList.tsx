@@ -23,9 +23,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export default function NamespaceList() {
   const queryClient = useQueryClient();
 
+  const sanitizeNamespaceName = (name: string): string => {
+    const trimmed = name.trim();
+    // Kubernetes namespace names must conform to DNS label standards:
+    // consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character.
+    if (!/^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(trimmed)) {
+      throw new Error('Invalid namespace name');
+    }
+    return encodeURIComponent(trimmed);
+  };
+
   const deleteMutation = useMutation({
     mutationFn: async (name: string) => {
-      const res = await fetch(`/api/namespaces/${name}`, { method: 'DELETE' });
+      const safeName = sanitizeNamespaceName(name);
+      const res = await fetch(`/api/namespaces/${safeName}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete');
       return res.json();
     },
