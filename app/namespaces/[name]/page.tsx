@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, LayoutGrid, ListTree, Code2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import yaml from 'js-yaml';
+import { toast } from 'sonner';
 
 export default function NamespaceDetailPage() {
   const { name } = useParams();
@@ -25,6 +26,11 @@ export default function NamespaceDetailPage() {
       return res.json();
     },
   });
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success('YAML copied to clipboard');
+  };
 
   if (isLoading) return <div className="p-8">Loading Namespace Context...</div>;
 
@@ -119,7 +125,7 @@ export default function NamespaceDetailPage() {
                 variant="outline"
                 size="sm"
                 className="h-8 bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800"
-                onClick={() => navigator.clipboard.writeText(yaml.dump(ns))}
+                onClick={() => copyToClipboard(yaml.dump(ns))}
               >
                 Copy YAML
               </Button>
