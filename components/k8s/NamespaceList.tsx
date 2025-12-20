@@ -119,7 +119,7 @@ export default function NamespaceList() {
                         disabled={deleteMutation.isPending}
                         className="bg-destructive hover:bg-destructive/90 text-white"
                       >
-                        Delete Namespace
+                        {deleteMutation.isPending ? 'Deleting...' : 'Delete Namespace'}
                       </AlertDialogAction>
                     </div>
                   </AlertDialogContent>
