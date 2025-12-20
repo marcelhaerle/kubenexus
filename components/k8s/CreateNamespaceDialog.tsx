@@ -56,7 +56,11 @@ export default function CreateNamespaceDialog() {
               placeholder="e.g. dev-environment"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && mutation.mutate(name)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && name) {
+                  mutation.mutate(name);
+                }
+              }}
             />
           </div>
           <Button
