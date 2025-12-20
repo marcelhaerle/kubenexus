@@ -23,7 +23,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ name: string }> }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ name: string }> },
+) {
   const { name } = await params;
   try {
     const k8sApi = getCoreApi();
