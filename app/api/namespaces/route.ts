@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       body: namespace,
     });
 
-    return NextResponse.json(response.spec, { status: 201 });
+    return NextResponse.json(response, { status: 201 });
   } catch (error: unknown) {
     const message =
       (error as { body?: { message?: string } }).body?.message || 'Failed to create namespace';
