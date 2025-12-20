@@ -114,7 +114,7 @@ export default function NamespaceDetailPage() {
                 Copy YAML
               </Button>
             </div>
-            <pre className="text-xs md:text-sm text-slate-300 font-mono overflow-auto max-h-150 leading-relaxed">
+            <pre className="text-xs md:text-sm text-slate-300 font-mono overflow-auto max-h-screen leading-relaxed">
               {ns ? yaml.dump(ns) : 'No data available'}
             </pre>
           </div>
