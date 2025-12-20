@@ -1,5 +1,27 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getCoreApi } from '@/lib/k8s-client';
+
+export async function GET(request: NextRequest, { params }: { params: Promise<{ name: string }> }) {
+  try {
+    const { name } = await params;
+    const k8sApi = getCoreApi();
+
+    // Fetch the namespace metadata
+    const response = await k8sApi.readNamespace({
+      name,
+    });
+
+    return NextResponse.json({
+      metadata: response.metadata,
+      status: response.status,
+    });
+  } catch (error: unknown) {
+    return NextResponse.json(
+      { error: (error as Error).message || 'Failed to fetch namespace' },
+      { status: 500 },
+    );
+  }
+}
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ uid: string }> }) {
   const { uid } = await params;

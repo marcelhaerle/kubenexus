@@ -72,7 +72,7 @@ export default function NamespaceList() {
               </div>
 
               <div className="flex justify-end gap-2 pt-2 border-t mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Link href={`/namespaces/${ns.uid}`}>
+                <Link href={`/namespaces/${ns.name}`}>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <ExternalLink className="h-4 w-4" />
                   </Button>
