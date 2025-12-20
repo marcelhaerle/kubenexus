@@ -10,7 +10,6 @@ export async function GET() {
     const summaryItems: NamespaceSummary[] = response.items.map((ns) => ({
       uid: ns.metadata?.uid || 'unknown',
       name: ns.metadata?.name || 'unknown',
-      status: ns.status?.phase || 'unknown',
       phase: ns.status?.phase || 'unknown',
       age: new Date(ns.metadata?.creationTimestamp || '').toISOString(),
     }));
