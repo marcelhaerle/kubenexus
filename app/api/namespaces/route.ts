@@ -33,9 +33,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Namespace name is required' }, { status: 400 });
     }
 
+    // Comprehensive sanitization for DNS-1123 subdomain
+    const sanitized = name
+      .toLowerCase()
+      .replace(/[^a-z0-9.-]/g, '-') // Replace invalid chars with '-'
+      .replace(/^-+|-+$/g, '') // Remove leading/trailing '-'
+      .replace(/-+/g, '-'); // Collapse multiple '-'
+
+    // Validate: Must match DNS-1123 pattern and be <= 253 chars
+    const dns1123Regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+    if (!dns1123Regex.test(sanitized) || sanitized.length > 253 || sanitized.length === 0) {
+      return NextResponse.json(
+        {
+          error:
+            'Invalid namespace name: must be a valid DNS-1123 subdomain (lowercase alphanumeric, -, ., start/end with alphanumeric, max 253 chars)',
+        },
+        { status: 400 },
+      );
+    }
+
     const k8sApi = getCoreApi();
     const namespace = {
-      metadata: { name: name.toLowerCase().replace(/\s+/g, '-') }, // Basic K8s name sanitization
+      metadata: { name: sanitized },
     };
 
     const response = await k8sApi.createNamespace({
