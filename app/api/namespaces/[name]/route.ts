@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCoreApi } from '@/lib/k8s-client';
+import { isK8sError } from '@/lib/errors';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ name: string }> }) {
   try {
@@ -31,22 +32,21 @@ export async function DELETE(
   try {
     const k8sApi = getCoreApi();
 
-    const allNamespaces = await k8sApi.listNamespace();
-    const namespace = allNamespaces.items.find((ns) => ns.metadata?.name === name);
-
-    if (!namespace) {
-      return NextResponse.json({ error: 'Namespace not found' }, { status: 404 });
-    }
-
     await k8sApi.deleteNamespace({
       name,
     });
 
     return NextResponse.json({ message: `Namespace ${name} deleted successfully` });
-  } catch (error: unknown) {
-    return NextResponse.json(
-      { error: (error as Error).message || 'Failed to delete namespace' },
-      { status: 500 },
-    );
+  } catch (error) {
+    if (isK8sError(error)) {
+      const statusCode = error.response.statusCode;
+      if (statusCode === 404) {
+        return NextResponse.json({ error: 'Namespace not found' }, { status: 404 });
+      } else {
+        return NextResponse.json({ error: 'Failed to delete namespace' }, { status: 500 });
+      }
+    } else {
+      return NextResponse.json({ error: 'Failed to delete namespace' }, { status: 500 });
+    }
   }
 }
