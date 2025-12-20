@@ -1,6 +1,7 @@
 import './globals.css';
 import QueryProvider from '@/components/providers/query-provider';
 import Sidebar from '@/components/layout/Sidebar';
+import { Toaster } from 'sonner';
 
 export const metadata = {
   title: 'KubeNexus - K8s Management Console',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="flex-1 overflow-y-auto p-8">{children}</div>
             </main>
           </div>
+          <Toaster position="bottom-right" richColors closeButton />
         </QueryProvider>
       </body>
     </html>

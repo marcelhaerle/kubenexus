@@ -4,7 +4,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
+  --color-card-foreground: var(--card-foreground);
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
     --color-primary: var(--primary);
@@ -17,17 +17,25 @@
     --color-accent-foreground: var(--accent-foreground);
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
-    --color-border: var(--border);
+  --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
+  --text-success: var(--color-success-foreground);
+    --text-warning: var(--color-warning-foreground);
+    --text-destructive: var(--color-destructive-foreground);
+    --text-foreground: var(--foreground);
 }
 
 :root {
   --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
@@ -41,8 +49,12 @@
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
+    --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.577 0.245 134.325);
+    --success-foreground: oklch(0.985 0 0);
+    --warning: oklch(0.718 0.205 99.325);
+    --warning-foreground: oklch(0.205 0 0);
+  --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
     --radius: 0.5rem;
