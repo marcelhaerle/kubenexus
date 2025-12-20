@@ -24,8 +24,8 @@ export default function NamespaceList() {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: async (uid: string) => {
-      const res = await fetch(`/api/namespaces/${uid}`, { method: 'DELETE' });
+    mutationFn: async (name: string) => {
+      const res = await fetch(`/api/namespaces/${name}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete');
       return res.json();
     },
@@ -99,7 +99,7 @@ export default function NamespaceList() {
                     <div className="flex justify-end gap-3 mt-4">
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => deleteMutation.mutate(ns.uid)}
+                        onClick={() => deleteMutation.mutate(ns.name)}
                         className="bg-destructive hover:bg-destructive/90 text-white"
                       >
                         Delete Namespace

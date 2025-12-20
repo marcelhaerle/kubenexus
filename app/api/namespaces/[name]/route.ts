@@ -23,26 +23,23 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ uid: string }> }) {
-  const { uid } = await params;
+export async function DELETE(request: Request, { params }: { params: Promise<{ name: string }> }) {
+  const { name } = await params;
   try {
     const k8sApi = getCoreApi();
-    // First, we need to get the namespace name by its UID
+
     const allNamespaces = await k8sApi.listNamespace();
-    const namespace = allNamespaces.items.find((ns) => ns.metadata?.uid === uid);
+    const namespace = allNamespaces.items.find((ns) => ns.metadata?.name === name);
 
     if (!namespace) {
       return NextResponse.json({ error: 'Namespace not found' }, { status: 404 });
     }
 
-    const namespaceName = namespace.metadata!.name!;
-
-    // Now we can delete the namespace by its name
     await k8sApi.deleteNamespace({
-      name: namespaceName,
+      name,
     });
 
-    return NextResponse.json({ message: `Namespace ${namespaceName} deleted successfully` });
+    return NextResponse.json({ message: `Namespace ${name} deleted successfully` });
   } catch (error: unknown) {
     return NextResponse.json(
       { error: (error as Error).message || 'Failed to delete namespace' },
