@@ -28,8 +28,13 @@ export default function NamespaceDetailPage() {
   });
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success('YAML copied to clipboard');
+    try {
+      navigator.clipboard.writeText(text);
+      toast.success('YAML copied to clipboard');
+    } catch (err) {
+      console.log('Clipboard copy failed', err);
+      toast.error('Failed to copy YAML');
+    }
   };
 
   if (isLoading) return <div className="p-8">Loading Namespace Context...</div>;
