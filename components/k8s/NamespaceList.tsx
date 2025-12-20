@@ -58,6 +58,7 @@ export default function NamespaceList() {
       return res.json();
     },
     refetchInterval: 10000,
+    refetchIntervalInBackground: false,
   });
 
   if (isLoading)
