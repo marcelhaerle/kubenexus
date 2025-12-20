@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 export default function CreateNamespaceDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
+  const [error, setError] = useState<null | string>(null);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -27,13 +28,17 @@ export default function CreateNamespaceDialog() {
         },
         body: JSON.stringify({ name: nsName }),
       });
-      if (!res.ok) throw new Error('Failed to create');
+      if (!res.ok) throw new Error((await res.json()).error);
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['namespaces'] });
       setOpen(false);
       setName('');
+      setError(null);
+    },
+    onError: (error) => {
+      setError(error.message || 'Failed to create namespace');
     },
   });
 
@@ -49,6 +54,7 @@ export default function CreateNamespaceDialog() {
         <DialogHeader>
           <DialogTitle>Create New Namespace</DialogTitle>
         </DialogHeader>
+        {error && <div className="text-destructive mb-2">{error}</div>}
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Namespace Name</label>
