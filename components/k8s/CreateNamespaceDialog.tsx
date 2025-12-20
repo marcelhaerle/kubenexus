@@ -22,6 +22,9 @@ export default function CreateNamespaceDialog() {
     mutationFn: async (nsName: string) => {
       const res = await fetch('/api/namespaces', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ name: nsName }),
       });
       if (!res.ok) throw new Error('Failed to create');
