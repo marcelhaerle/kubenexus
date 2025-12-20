@@ -72,7 +72,7 @@ export default function CreateNamespaceDialog() {
           <Button
             className="w-full"
             onClick={() => mutation.mutate(name)}
-            disabled={mutation.isPending || !name}
+            disabled={mutation.isPending || !name.trim()}
           >
             {mutation.isPending ? 'Creating...' : 'Confirm Creation'}
           </Button>
