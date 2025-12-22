@@ -38,6 +38,20 @@ export default function LogViewer({ namespace, podName, isExpanded }: LogViewerP
         signal: controller.signal,
       });
 
+      if (!response.ok) {
+        let errorText = '';
+        try {
+          errorText = await response.text();
+        } catch (e) {
+          console.error('Error reading error response body:', e);
+          // Ignore errors while reading error response body
+        }
+        throw new Error(
+          errorText ||
+            `Failed to connect to log stream (${response.status} ${response.statusText})`,
+        );
+      }
+
       if (!response.body) throw new Error('No readable stream');
 
       const reader = response.body.getReader();
