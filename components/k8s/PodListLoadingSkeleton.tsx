@@ -37,8 +37,6 @@ export default function PodListLoadingSkeleton() {
                 <Skeleton className="h-5 w-full" />
                 <Skeleton className="h-5 w-full" />
                 <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
                 <Skeleton className="h-5 w-8" />
               </div>
             ))}
