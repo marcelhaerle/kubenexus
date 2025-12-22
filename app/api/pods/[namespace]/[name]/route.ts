@@ -15,9 +15,8 @@ export async function GET(
       namespace,
       name,
     });
-    const pod = response;
 
-    return NextResponse.json({ pod: pod });
+    return NextResponse.json({ pod: response });
   } catch (error: unknown) {
     if (isK8sError(error)) {
       return NextResponse.json(
