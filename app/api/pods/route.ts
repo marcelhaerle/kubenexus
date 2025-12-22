@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         node: pod.spec?.nodeName || '',
         // Calculate restart count from all containers
         restarts: (pod.status?.containerStatuses || []).reduce(
-          (acc, curr) => acc + curr.restartCount,
+          (acc, curr) => acc + (curr.restartCount ?? 0),
           0,
         ),
         creationTimestamp: formatDateISO(pod.metadata?.creationTimestamp || ''),
