@@ -94,9 +94,13 @@ export default function LogViewer({ namespace, podName, isExpanded }: LogViewerP
     const blob = new Blob([logs.join('\n')], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `${namespace}-${podName}-logs.txt`;
-    a.click();
+    try {
+      a.href = url;
+      a.download = `${namespace}-${podName}-logs.txt`;
+      a.click();
+    } finally {
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
