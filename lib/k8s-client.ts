@@ -20,3 +20,5 @@ export function getKubeConfig(): k8s.KubeConfig {
 // Helper to get specific API clients
 export const getCoreApi = () => getKubeConfig().makeApiClient(k8s.CoreV1Api);
 export const getAppsApi = () => getKubeConfig().makeApiClient(k8s.AppsV1Api);
+
+export const log = new k8s.Log(getKubeConfig());
