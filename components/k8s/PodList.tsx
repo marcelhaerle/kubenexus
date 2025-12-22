@@ -138,10 +138,7 @@ export default function PodList({ namespace }: { namespace?: string }) {
                       <DropdownMenuItem onClick={() => toast('Shell feature is coming soon.')}>
                         <Terminal className="mr-2 h-4 w-4" /> Shell
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="text-destructive focus:text-destructive"
-                        onClick={() => setPodToDelete(pod)}
-                      >
+                      <DropdownMenuItem variant="destructive" onClick={() => setPodToDelete(pod)}>
                         <Trash className="mr-2 h-4 w-4" /> Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
