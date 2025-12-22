@@ -132,10 +132,10 @@ export default function PodList({ namespace }: { namespace?: string }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => console.log('View Logs')}>
+                      <DropdownMenuItem onClick={() => toast('Logs feature is coming soon.')}>
                         <FileText className="mr-2 h-4 w-4" /> Logs
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => console.log('Exec Shell')}>
+                      <DropdownMenuItem onClick={() => toast('Shell feature is coming soon.')}>
                         <Terminal className="mr-2 h-4 w-4" /> Shell
                       </DropdownMenuItem>
                       <DropdownMenuItem
