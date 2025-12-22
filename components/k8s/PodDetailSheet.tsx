@@ -45,7 +45,7 @@ export default function PodDetailSheet({ open, onOpenChange, pod }: PodDetailShe
       <SheetContent
         className={cn(
           'transition-all duration-300 ease-in-out overflow-y-auto pl-4 pr-4 pb-4',
-          isExpanded ? 'w-screen sm:max-w-[95vw]' : 'w-[800px] sm:max-w-[800px]',
+          isExpanded ? 'w-screen sm:max-w-[95vw]' : 'w-200 sm:max-w-200',
         )}
       >
         <SheetHeader className="mb-4">
