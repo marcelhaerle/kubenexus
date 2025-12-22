@@ -26,7 +26,6 @@ export default function LogViewer({ namespace, podName, isExpanded }: LogViewerP
   }, []);
 
   const startStreaming = useCallback(async () => {
-    stopStreaming();
     setIsConnected(true);
     setLogs(['--- Connecting to log stream... ---']);
 
@@ -77,7 +76,7 @@ export default function LogViewer({ namespace, podName, isExpanded }: LogViewerP
         setIsConnected(false);
       }
     }
-  }, [namespace, podName, stopStreaming]);
+  }, [namespace, podName]);
 
   useEffect(() => {
     startStreaming();
