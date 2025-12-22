@@ -1,4 +1,4 @@
-import { getDatabaseLogStream } from '@/lib/services/observability';
+import { getPodLogStream } from '@/lib/services/observability';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Use dynamic rendering as this is a live stream
@@ -12,7 +12,7 @@ export async function GET(
   const containerName = request.nextUrl.searchParams.get('container') || undefined;
 
   try {
-    const stream = await getDatabaseLogStream(namespace, name, containerName);
+    const stream = await getPodLogStream(namespace, name, containerName);
 
     return new NextResponse(stream, {
       headers: {

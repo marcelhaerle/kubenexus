@@ -1,7 +1,7 @@
 import { log, getCoreApi } from '@/lib/k8s-client';
 import { PassThrough } from 'stream';
 
-export async function getDatabaseLogStream(
+export async function getPodLogStream(
   namespace: string,
   podName: string,
   containerName: string | undefined,
