@@ -10,10 +10,13 @@ import {
 } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Activity, FileText } from 'lucide-react';
+import { Activity, Maximize2, Minimize2 } from 'lucide-react';
 import { Pod, PodSummary } from '@/types/k8s';
-import { toBadgeVariant } from '@/lib/utils';
+import { cn, toBadgeVariant } from '@/lib/utils';
 import { dump } from 'js-yaml';
+import LogViewer from './LogViewer';
+import { Button } from '../ui/button';
+import { useState } from 'react';
 
 interface PodDetailSheetProps {
   open: boolean;
@@ -22,6 +25,8 @@ interface PodDetailSheetProps {
 }
 
 export default function PodDetailSheet({ open, onOpenChange, pod }: PodDetailSheetProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const { data: fullPod, isLoading } = useQuery({
     queryKey: ['pod', pod?.namespace, pod?.name],
     queryFn: async (): Promise<Pod> => {
@@ -37,11 +42,30 @@ export default function PodDetailSheet({ open, onOpenChange, pod }: PodDetailShe
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-200 sm:max-w-2xl overflow-y-auto pl-4 pr-4 pb-4">
+      <SheetContent
+        className={cn(
+          'transition-all duration-300 ease-in-out overflow-y-auto pl-4 pr-4 pb-4',
+          isExpanded ? 'w-screen sm:max-w-[95vw]' : 'w-[800px] sm:max-w-[800px]',
+        )}
+      >
         <SheetHeader className="mb-4">
-          <div className="flex items-center gap-3">
-            <SheetTitle className="text-xl font-mono">{pod.name}</SheetTitle>
-            <Badge variant={toBadgeVariant(pod.status)}>{pod.status}</Badge>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <SheetTitle className="text-xl font-mono">{pod.name}</SheetTitle>
+              <Badge variant={toBadgeVariant(pod.status)}>{pod.status}</Badge>
+            </div>
+            <div className="mr-8">
+              {' '}
+              {/* mr-8 damit wir nicht mit dem Standard-Close-Button kollidieren */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsExpanded(!isExpanded)}
+                title={isExpanded ? 'Collapse' : 'Expand'}
+              >
+                {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
           <SheetDescription>
             Namespace: <span className="font-mono text-foreground">{pod.namespace}</span>
@@ -122,13 +146,11 @@ export default function PodDetailSheet({ open, onOpenChange, pod }: PodDetailShe
 
           {/* TAB: LOGS */}
           <TabsContent value="logs" className="mt-4">
-            <div className="rounded-md bg-black p-4 font-mono text-xs text-green-400 h-[60vh] overflow-auto">
-              {/* TODO: Connect to WebSocket or Log Stream API */}
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <FileText className="w-4 h-4" />
-                <span>Log streaming not connected.</span>
-              </div>
-            </div>
+            <LogViewer
+              namespace={fullPod?.metadata?.namespace || ''}
+              podName={fullPod?.metadata?.name || ''}
+              isExpanded={isExpanded}
+            />
           </TabsContent>
         </Tabs>
       </SheetContent>
