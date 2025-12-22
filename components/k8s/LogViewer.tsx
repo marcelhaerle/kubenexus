@@ -105,9 +105,11 @@ export default function LogViewer({ namespace, podName, isExpanded }: LogViewerP
 
   return (
     <div
-      className={`bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-inner flex flex-col ${
-        isExpanded ? 'h-[85vh]' : 'h-[60vh]'
-      }`}
+      className={
+        isExpanded
+          ? 'bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-inner flex flex-col h-[85vh]'
+          : 'bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-inner flex flex-col h-[60vh]'
+      }
     >
       {/* Toolbar */}
       <div className="bg-slate-800 px-4 py-2 flex justify-between items-center border-b border-slate-700">
