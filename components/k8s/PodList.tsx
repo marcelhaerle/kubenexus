@@ -36,6 +36,9 @@ import {
   AlertDialogTitle,
 } from '../ui/alert-dialog';
 import { toast } from 'sonner';
+import { AnimatePresence, motion } from 'framer-motion';
+
+const MotionTableRow = motion(TableRow);
 
 export default function PodList({ namespace }: { namespace?: string }) {
   const [filter, setFilter] = useState('');
@@ -107,45 +110,56 @@ export default function PodList({ namespace }: { namespace?: string }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredPods.map((pod: PodSummary) => (
-              <TableRow
-                key={pod.uid}
-                className="cursor-pointer hover:bg-muted/50"
-                onClick={() => setSelectedPod(pod)}
-              >
-                <TableCell className="font-mono text-xs font-bold">{pod.name}</TableCell>
-                <TableCell>
-                  <Badge variant={toBadgeVariant(pod.status)}>{pod.status}</Badge>
-                </TableCell>
-                <TableCell>{pod.restarts}</TableCell>
-                <TableCell className="text-muted-foreground text-xs">{pod.node}</TableCell>
-                <TableCell className="text-xs italic">
-                  {formatDistanceToNow(new Date(pod.creationTimestamp), { addSuffix: true })}
-                </TableCell>
-                {/* Actions Menu */}
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => toast('Logs feature is coming soon.')}>
-                        <FileText className="mr-2 h-4 w-4" /> Logs
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => toast('Shell feature is coming soon.')}>
-                        <Terminal className="mr-2 h-4 w-4" /> Shell
-                      </DropdownMenuItem>
-                      <DropdownMenuItem variant="destructive" onClick={() => setPodToDelete(pod)}>
-                        <Trash className="mr-2 h-4 w-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+            <AnimatePresence mode="popLayout" initial={false}>
+              {filteredPods.map((pod: PodSummary) => (
+                <MotionTableRow
+                  key={pod.uid}
+                  layout // Das hier ist Magie: Es animiert die Position der ANDEREN Zeilen, wenn diese gelöscht wird
+                  initial={{ opacity: 0, y: 10 }} // Start: Unsichtbar & leicht unten
+                  animate={{ opacity: 1, y: 0 }} // Ziel: Sichtbar & oben
+                  exit={{
+                    opacity: 0,
+                    scale: 0.95,
+                    transition: { duration: 0.2 },
+                  }} // Ende: Fade out & leicht verkleinern
+                  transition={{ duration: 0.2 }}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => setSelectedPod(pod)}
+                >
+                  <TableCell className="font-mono text-xs font-bold">{pod.name}</TableCell>
+                  <TableCell>
+                    <Badge variant={toBadgeVariant(pod.status)}>{pod.status}</Badge>
+                  </TableCell>
+                  <TableCell>{pod.restarts}</TableCell>
+                  <TableCell className="text-muted-foreground text-xs">{pod.node}</TableCell>
+                  <TableCell className="text-xs italic">
+                    {formatDistanceToNow(new Date(pod.creationTimestamp), { addSuffix: true })}
+                  </TableCell>
+                  {/* Actions Menu */}
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => toast('Logs feature is coming soon.')}>
+                          <FileText className="mr-2 h-4 w-4" /> Logs
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => toast('Shell feature is coming soon.')}>
+                          <Terminal className="mr-2 h-4 w-4" /> Shell
+                        </DropdownMenuItem>
+                        <DropdownMenuItem variant="destructive" onClick={() => setPodToDelete(pod)}>
+                          <Trash className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </MotionTableRow>
+              ))}
+            </AnimatePresence>
           </TableBody>
         </Table>
       </div>
