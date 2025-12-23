@@ -43,9 +43,15 @@ const MotionTableRow = motion(TableRow);
 export default function PodList({ namespace }: { namespace?: string }) {
   const [filter, setFilter] = useState('');
   const [selectedPod, setSelectedPod] = useState<PodSummary | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [podToDelete, setPodToDelete] = useState<PodSummary | null>(null);
 
   const queryClient = useQueryClient();
+
+  const openPodDetails = (pod: PodSummary) => {
+    setSelectedPod(pod);
+    setIsSheetOpen(true);
+  };
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['pods', namespace],
@@ -124,7 +130,7 @@ export default function PodList({ namespace }: { namespace?: string }) {
                   }} // Ende: Fade out & leicht verkleinern
                   transition={{ duration: 0.2 }}
                   className="cursor-pointer hover:bg-muted/50"
-                  onClick={() => setSelectedPod(pod)}
+                  onClick={() => openPodDetails(pod)}
                 >
                   <TableCell className="font-mono text-xs font-bold">{pod.name}</TableCell>
                   <TableCell>
@@ -164,11 +170,7 @@ export default function PodList({ namespace }: { namespace?: string }) {
         </Table>
       </div>
 
-      <PodDetailSheet
-        open={!!selectedPod}
-        onOpenChange={(open) => !open && setSelectedPod(null)}
-        pod={selectedPod}
-      />
+      <PodDetailSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} pod={selectedPod} />
 
       <AlertDialog open={!!podToDelete} onOpenChange={(open) => !open && setPodToDelete(null)}>
         <AlertDialogContent>
