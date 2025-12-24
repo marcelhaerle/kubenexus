@@ -1,5 +1,8 @@
 from kubernetes import client, config
 
+from app.core.logging import setup_logging
+
+logger = setup_logging()
 
 def get_k8s_client():
     """
@@ -15,7 +18,7 @@ def get_k8s_client():
             config.load_kube_config()
         except config.ConfigException:
             # For unit tests without cluster access or CI/CD
-            print("Warning: No K8s config found.")
+            logger.warning("No K8s config found.")
             return None
 
     return client.CoreV1Api()
