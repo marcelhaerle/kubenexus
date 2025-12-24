@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.core.logging import setup_logging
+from app.routers import namespaces
 
 logger = setup_logging()
 
@@ -18,6 +19,8 @@ app = FastAPI(
     description="Backend API for KubeNexus Kubernetes Management",
     lifespan=lifespan,
 )
+
+app.include_router(namespaces.router)
 
 
 @app.get("/health")

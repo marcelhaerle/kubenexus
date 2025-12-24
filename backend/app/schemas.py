@@ -8,3 +8,17 @@ class KubeResource(BaseModel):
     uid: str
     name: str
     creation_timestamp: Optional[datetime] = None
+
+
+class NamespaceSummary(KubeResource):
+    phase: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "uid": "namespace-123",
+                "name": "my-namespace",
+                "phase": "Active",
+            }
+        }
+    }
