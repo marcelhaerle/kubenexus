@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException, Query
-from typing import List, Optional
+
+from app.core.logging import logger
 from app.k8s_client import get_k8s_client
 from app.schemas import PodSummary
-from app.core.logging import logger
 
 router = APIRouter(prefix="/pods", tags=["pods"])
 
 
-@router.get("/", response_model=List[PodSummary])
-async def list_pods(namespace: Optional[str] = Query(None)):
+@router.get("/", response_model=list[PodSummary])
+async def list_pods(namespace: str | None = Query(None)):
     """
     List all pods, optionally filtered by namespace.
     """
@@ -47,4 +47,4 @@ async def list_pods(namespace: Optional[str] = Query(None)):
 
     except Exception as e:
         logger.error(f"Error fetching pods: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail="Internal Server Error") from e

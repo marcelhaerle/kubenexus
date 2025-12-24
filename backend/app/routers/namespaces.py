@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.core.logging import logger
 
-from typing import List
+from app.core.logging import logger
 from app.k8s_client import get_k8s_client
 from app.schemas import NamespaceSummary
 
@@ -11,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[NamespaceSummary])
+@router.get("/", response_model=list[NamespaceSummary])
 async def list_namespaces():
     """
     List all namespaces as summaries.
@@ -37,4 +36,4 @@ async def list_namespaces():
 
     except Exception as e:
         logger.error(f"Error fetching namespaces: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail="Internal Server Error") from e

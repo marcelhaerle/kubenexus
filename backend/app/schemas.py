@@ -1,14 +1,14 @@
-from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+
+from pydantic import BaseModel
 
 
 # Base model for common configs
 class KubeResource(BaseModel):
     uid: str
     name: str
-    namespace: Optional[str] = None
-    creation_timestamp: Optional[datetime] = None
+    namespace: str | None = None
+    creation_timestamp: datetime | None = None
 
 
 class NamespaceSummary(KubeResource):
@@ -28,7 +28,7 @@ class NamespaceSummary(KubeResource):
 class PodSummary(KubeResource):
     status: str
     restarts: int = 0
-    node: Optional[str] = None
+    node: str | None = None
 
     model_config = {
         "json_schema_extra": {
