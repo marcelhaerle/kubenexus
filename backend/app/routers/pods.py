@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, HTTPException, Query
 
 from app.core.logging import logger

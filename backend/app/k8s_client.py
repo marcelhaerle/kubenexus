@@ -4,6 +4,7 @@ from app.core.logging import setup_logging
 
 logger = setup_logging()
 
+
 def get_k8s_client():
     """
     Loads the K8s config (in-cluster or local ~/.kube/config)
