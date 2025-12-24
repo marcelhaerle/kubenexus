@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.core.logging import setup_logging
-from app.routers import namespaces
+from app.routers import namespaces, pods
 
 logger = setup_logging()
 
@@ -21,6 +21,7 @@ app = FastAPI(
 )
 
 app.include_router(namespaces.router)
+app.include_router(pods.router)
 
 
 @app.get("/health")

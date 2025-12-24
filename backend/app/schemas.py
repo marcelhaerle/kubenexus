@@ -22,3 +22,22 @@ class NamespaceSummary(KubeResource):
             }
         }
     }
+
+
+class PodSummary(KubeResource):
+    status: str
+    restarts: int = 0
+    node: Optional[str] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "uid": "123-456",
+                "name": "nginx-pod",
+                "namespace": "default",
+                "status": "Running",
+                "restarts": 0,
+                "node": "worker-node-1",
+            }
+        }
+    }
