@@ -1,4 +1,4 @@
-from kubernetes import config, client
+from kubernetes import client, config
 
 
 def get_k8s_client():
