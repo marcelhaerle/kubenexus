@@ -7,6 +7,7 @@ from typing import Optional
 class KubeResource(BaseModel):
     uid: str
     name: str
+    namespace: Optional[str] = None
     creation_timestamp: Optional[datetime] = None
 
 
